@@ -1,0 +1,167 @@
+snippet s_set_git
+	# Source: https://happygitwithr.com/hello-git.html
+	# Terminal check: git config --global --list
+	usethis::use_git_config(user.name = "hansvomkreuz", user.email = "hansvomkreuz@gmail.com")
+	
+snippet s_view_rprofile
+	# Some useful .Rprofile settings: https://bit.ly/2Hb9J5d
+	usethis::edit_r_profile()
+	
+snippet s_view_snippets
+	# view local RStudio snippets
+	usethis::edit_rstudio_snippets()
+	# Copy from snippets to git folder
+	file.copy(from = "~/.R/snippets/r.snippets",to = "C:/NotBackedUp/R/myPackages/myUtilities/R/snippets",overwrite = T)
+	# Copy from git folder to snippets
+	file.copy(from = "C:/NotBackedUp/R/myPackages/myUtilities/R/snippets/r.snippets",to = "~/.R/snippets",overwrite = T)
+	
+snippet s_load_myutilities
+	# Load myUtilities personal package
+	# usethis::create_package(path = "C:/NotBackedUp/R/myPackages/myUtilities")
+	devtools::load_all(path = "C:/NotBackedUp/R/myPackages/myUtilities")
+	library(myUtilities)
+	
+snippet s_load_datafromteradata
+	# Upload local data, otherwise download from Teradata
+	tictoc::tic("Download dataset")
+	dataFilePath <- ${1:localFilePath} # "./Data/01 Application Statistics.rds"
+	if(file.exists(dataFilePath)){
+		dataDownloaded <- readRDS(dataFilePath)
+	} else {
+		sql.string <- "${2:sqlString}" # "select * from PRD_CAA_CRE_DDWSP_QI20_2_TBB.HOVL_BML_MAD_BDM_ANA;"
+		dataDownloaded <- RODBC::sqlQuery(channel = tdCon, query = sql.string)
+		saveRDS(dataDownloaded,file = dataFilePath)
+	}
+	odbcClose(tdCon)
+	tictoc::toc()
+	
+snippet s_install_packages
+	# Force install of a package
+	remove.packages(pkgs = "${1:packageList}")
+	install.packages(pkgs = "${1:packageList}")
+	download.packages(pkgs = "${1:packageList}",destdir = "C:/NotBackedUp/R/Package Downloads")
+	install.packages(pkgs = "C:/NotBackedUp/R/Package Downloads/${1:packageList}", repos = NULL, type = "source")
+	
+snippet s_controlflow_forloop
+	for(${1:i} in ${2:vector}){
+		${3:code}
+	}
+	
+snippet s_controlflow_ifelse
+	if(${1:condition1}){
+		${3:code1}
+	} else if (${2:condition2}){
+		${4:code2}
+	} else {
+		${5:code3}
+	}
+	
+snippet s_connect_teradata
+	# Create teradata connection
+	tdCreds <- readr::read_csv(file = "C:/NotBackedUp/tdCreds.csv")
+	tdCon <- RODBC::odbcConnect(dsn=tdCreds\$DSN,uid=tdCreds\$USERNAME,pwd=tdCreds\$PASSWORD)
+	rm(tdCreds)
+	
+snippet s_tdsp_5acceptance
+	# CUSTOMER ACCEPTANCE
+	# Source: https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/lifecycle-acceptance
+	# Goal:
+	#	Finalize project deliverables: Confirm that the pipeline, the model, and their deployment in a production environment satisfy the customer's objectives.
+	# Tasks:
+	#	1. System validation: Confirm that the deployed model and pipeline meet the customer's needs.
+	#	2. Project hand-off: Hand the project off to the entity that's going to run the system in production.
+	# Artifact:
+	#	Exit report: https://github.com/Azure/Azure-TDSP-ProjectTemplate/blob/master/Docs/Project/Exit%20Report.md
+	
+snippet s_tdsp_4dployment
+	# MODEL DEPLOYMENT
+	# Source: https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/lifecycle-deployment
+	# Goal:
+	# 	Deploy models with a data pipeline to a production or production-like environment for final user acceptance.
+	# Task:
+	#	Operationalize the model: Deploy the model and pipeline to a production or production-like environment for application consumption.
+	# Artifacts
+	#	1. A status dashboard that displays the system health and key metrics
+	#	2. A final modeling report with deployment details
+	#	3. A final solution architecture document
+	
+snippet s_tdsp_3modelling
+	# MODELLING
+	# Source: https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/lifecycle-modeling
+	# IMPORTANT Resource:
+	#	1. Automated modeling and reporting tool: https://github.com/Azure/Azure-TDSP-Utilities/tree/master/DataScienceUtilities/Modeling
+	#	2. Azure ML Cheat sheet: https://docs.microsoft.com/en-us/azure/machine-learning/algorithm-cheat-sheet
+	#	3. Automated ML: https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml
+	# Goals:
+	#	1. Determine the optimal data features for the machine-learning model.
+	#	2. Create an informative machine-learning model that predicts the target most accurately.
+	#	3. Create a machine-learning model that's suitable for production.
+	# Tasks:
+	#	1.Feature engineering: Create data features from the raw data to facilitate model training.
+	#	2.Model training: Find the model that answers the question most accurately by comparing their success metrics.
+	# 		a. Split the input data randomly for modeling into a training data set and a test data set.
+	# 		b. Build the models by using the training data set.
+	# 		c. Evaluate the training and the test data set. Use a series of competing machine-learning algorithms along with the various associated tuning parameters (known as a parameter sweep) that are geared toward answering the question of interest with the current data.
+	# 		d. Determine the “best” solution to answer the question by comparing the success metrics between alternative methods.
+	#	3.Determine if your model is suitable for production.
+	# Artifacts:
+	#	1. Feature sets: https://github.com/Azure/Azure-TDSP-ProjectTemplate/blob/master/Docs/Data_Report/Data%20Defintion.md
+	#		The features developed for the modeling are described in the Feature sets section of the Data definition report. It contains pointers to the code to generate the features and a description of how the feature was generated.
+	#	2. Model report: https://github.com/Azure/Azure-TDSP-ProjectTemplate/blob/master/Docs/Model/Model%201/Model%20Report.md
+	#		For each model that's tried, a standard, template-based report that provides details on each experiment is produced.
+	#	3. Checkpoint decision: Evaluate whether the model performs sufficiently for production. Some key questions to ask are:
+	#		a. Does the model answer the question with sufficient confidence given the test data?
+	#		b. Should you try any alternative approaches? Should you collect additional data, do more feature engineering, or experiment with other algorithms?
+	
+snippet s_tdsp_2data
+	# DATA ACQUISITION AND UNDERSTANDING
+	# Source: https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/lifecycle-data
+	# IMPORTANT Resource:
+	#	Interactive Data Exploratory Analysis and Reporting (IDEAR)
+	#	https://github.com/Azure/Azure-TDSP-Utilities/tree/master/DataScienceUtilities/DataReport-Utils
+	# Goals:
+	# 	1. Produce a clean, high-quality data set whose relationship to the target variables is understood. Locate the data set in the appropriate analytics environment so you are ready to model.
+	# 	2. Develop a solution architecture of the data pipeline that refreshes and scores the data regularly.
+	# Tasks:
+	# 	1. Ingest the data into the target analytic environment.
+	# 	2. Explore the data to determine if the data quality is adequate to answer the question.
+	# 	3. Set up a data pipeline to score new or regularly refreshed data.
+	# Artifacts:
+	# 	1.Data Quality Report: https://github.com/Azure/Azure-TDSP-ProjectTemplate/blob/master/Docs/Data_Report/DataSummaryReport.md
+	#		Refer to IDEAR
+	# 	2.Solution architecture
+	#		The solution architecture can be a diagram or description of your data pipeline that you use to run scoring or predictions on new data after you have built a model. It also contains the pipeline to retrain your model based on new data. Store the document in the Project directory when you use the TDSP directory structure template.
+	# 	3.Checkpoint decision
+	# 		Before you begin full-feature engineering and model building, you can reevaluate the project to determine whether the value expected is sufficient to continue pursuing it. You might, for example, be ready to proceed, need to collect more data, or abandon the project as the data does not exist to answer the question.
+	
+snippet s_tdsp_1business
+	# BUSINESS UNDERSTANDING
+	# Source: https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/lifecycle-business-understanding
+	# Goals:
+	# 	1.Specify the key variables that are to serve as the model targets and whose related metrics are used determine the success of the project.
+	# 	2.Identify the relevant data sources that the business has access to or needs to obtain.
+	# Tasks:
+	# 	1. Define objectives: Work with your customer and other stakeholders to understand and identify the business problems. Formulate questions that define the business goals that the data science techniques can target.
+	# 	2. Identify data sources: Find the relevant data that helps you answer the questions that define the objectives of the project.
+	# Artifacts:
+	# 	1. Charter document: https://github.com/Azure/Azure-TDSP-ProjectTemplate/blob/master/Docs/Project/Charter.md
+	# 	2. Data Sources: https://github.com/Azure/Azure-TDSP-ProjectTemplate/blob/master/Docs/Data_Report/Data%20Defintion.md#raw-data-sources
+	# 	3. Data Dictionaries: https://github.com/Azure/Azure-TDSP-ProjectTemplate/tree/master/Docs/Data_Dictionaries
+	
+snippet s_tdsp_0dslifecycle
+	# TEAM DATA SCIENCE PROCESS FRAMEWORK
+	# Source: https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/overview
+	# 0. PROJECT REPO TEMPLATE
+	#		https://github.com/Azure/Azure-TDSP-ProjectTemplate
+	# I. BUSINESS UNDERSTANDING
+	# 		s_tdsp_1business
+	# II. DATA ACQUISITION AND UNDERSTANDING
+	#		s_tdsp_2data
+	# III. MODELLING
+	#		s_tdsp_3modelling
+	# IV. DEPLOYMENT
+	#		s_tdsp_4dployment
+	# V. CUSTOMER ACCEPTANCE
+	#		s_tdsp_5acceptance
+	
+

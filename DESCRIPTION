@@ -1,0 +1,16 @@
+Package: myUtilities
+Title: My personal user-defined functions
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Eljay",
+           family = "Canoy",
+           role = c("aut", "cre"),
+           email = "canoyjl2@anz.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: 
+    A collection of my personal user-defined functions used for EDA, modelling,
+    and many other purposes.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
