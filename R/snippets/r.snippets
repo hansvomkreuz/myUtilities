@@ -103,16 +103,16 @@ snippet s_view_rprofile
 	usethis::edit_r_profile()
 	
 snippet s_view_snippets
-	# view local RStudio snippets
+	# View local RStudio snippets
 	usethis::edit_rstudio_snippets()
-	# WINDOWS: Copy from snippets to git folder
-	file.copy(from = "~/.R/snippets/r.snippets",to = "C:/NotBackedUp/R/myPackages/myUtilities/R/snippets",overwrite = T)
-	# WINDOWS: Copy from git folder to snippets
-	file.copy(from = "C:/NotBackedUp/R/myPackages/myUtilities/R/snippets/r.snippets",to = "~/.R/snippets",overwrite = T)
-	# MAC: Copy from snippets to git folder
-	file.copy(from = "/Users/GiusseppeMac/.R/snippets/r.snippets",to = "/Users/GiusseppeMac/Google Drive/My R Packages/myUtilities/R/snippets",overwrite = T)
-	# MAC: Copy from git folder to snippets
-	file.copy(from = "/Users/GiusseppeMac/Google Drive/My R Packages/myUtilities/R/snippets/r.snippets",to = "/Users/GiusseppeMac/.R/snippets",overwrite = T)
+	# Folder locations; os: 1 = Window, 2 = Mac
+	os <- 1
+	snippetFolder <- ifelse(os == 1,"~/.R/snippets/","/Users/GiusseppeMac/.R/snippets/")
+	gitFolder <- ifelse(os == 1,"C:/NotBackedUp/R/myPackages/myUtilities/R/snippets/","/Users/GiusseppeMac/Google Drive/My R Packages/myUtilities/R/snippets/")
+	# Copy from snippets folder to git folder
+	file.copy(from = paste0(snippetFolder,"r.snippets"),to = gitFolder,overwrite = T)
+	# Copy from git folder to snippets folder
+	file.copy(from = paste0(gitFolder,"r.snippets"),to = snippetFolder,overwrite = T)
 	
 snippet s_load_myutilities
 	# Load myUtilities personal package
