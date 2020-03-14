@@ -113,6 +113,13 @@ snippet s_view_snippets
 	file.copy(from = paste0(snippetFolder,"r.snippets"),to = gitFolder,overwrite = T)
 	# Copy from git folder to snippets folder
 	file.copy(from = paste0(gitFolder,"r.snippets"),to = snippetFolder,overwrite = T)
+
+snippet s_memory
+	# pryr github: https://github.com/hadley/pryr
+	# How much memory is currenty used by R?
+	pryr::mem_used()
+	# Size of an object
+	pryr::object_size(${1:object})
 	
 snippet s_load_myutilities
 	# Load myUtilities personal package
