@@ -109,9 +109,9 @@ snippet s_view_snippets
 	os <- 1
 	snippetFolder <- ifelse(os == 1,"~/.R/snippets/","/Users/GiusseppeMac/.R/snippets/")
 	gitFolder <- ifelse(os == 1,"C:/NotBackedUp/R/myPackages/myUtilities/R/snippets/","/Users/GiusseppeMac/Google Drive/My R Packages/myUtilities/R/snippets/")
-	# Copy from snippets folder to git folder
+	# Copy from local snippets folder to git folder
 	file.copy(from = paste0(snippetFolder,"r.snippets"),to = gitFolder,overwrite = T)
-	# Copy from git folder to snippets folder
+	# Copy from git folder to local snippets folder
 	file.copy(from = paste0(gitFolder,"r.snippets"),to = snippetFolder,overwrite = T)
 
 snippet s_memory
@@ -161,6 +161,20 @@ snippet s_controlflow_ifelse
 	} else {
 		${5:code3}
 	}
+	
+snippet s_connect_postgre_mynd_staging
+	# Connect to Mynd staging database, https://aact.ctti-clinicaltrials.org/r
+	library(RPostgreSQL)
+	library(DBI)
+	psqlCon <- dbConnect(drv = dbDriver("PostgreSQL"), dbname="mynd",host="pdw.staging.mynd.ws", port=5432, user="louie_canoy", password="yuq6emye05mi0jr1")
+	test <- dbGetQuery(psqlCon, "select * from core_owners.owners limit 100;")
+	
+snippet s_connect_postgre_mynd_prod
+	# Connect to Mynd prod database, https://aact.ctti-clinicaltrials.org/r
+	library(RPostgreSQL)
+	library(DBI)
+	psqlCon <- dbConnect(drv = dbDriver("PostgreSQL"), dbname="mynd",host="pdws.prod.mynd.ws", port=5432, user="louie_canoy", password="5riy9e1o7ksbcfan")
+	test <- dbGetQuery(psqlCon, "select * from core_owners.owners limit 100;")
 	
 snippet s_connect_teradata
 	# Create teradata connection
