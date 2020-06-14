@@ -172,14 +172,14 @@ snippet s_connect_postgre_mynd_staging
 	# Connect to Mynd staging database, https://aact.ctti-clinicaltrials.org/r
 	library(RPostgreSQL)
 	library(DBI)
-	psqlCon <- dbConnect(drv = dbDriver("PostgreSQL"), dbname="mynd",host="pdw.staging.mynd.ws", port=5432, user="louie_canoy", password="yuq6emye05mi0jr1")
+	psqlCon <- dbConnect(drv = dbDriver("PostgreSQL"), dbname="mynd",host="analyticsdb.staging.mynd.ws", port=5432, user="louie_canoy", password="yuq6emye05mi0jr1")
 	test <- dbGetQuery(psqlCon, "select * from core_owners.owners limit 100;")
-	
+
 snippet s_connect_postgre_mynd_prod
 	# Connect to Mynd prod database, https://aact.ctti-clinicaltrials.org/r
 	library(RPostgreSQL)
 	library(DBI)
-	psqlCon <- dbConnect(drv = dbDriver("PostgreSQL"), dbname="mynd",host="pdws.prod.mynd.ws", port=5432, user="louie_canoy", password="5riy9e1o7ksbcfan")
+	psqlCon <- dbConnect(drv = dbDriver("PostgreSQL"), dbname="mynd",host="ro.analyticsdb.prod.mynd.ws", port=5432, user="louie_canoy", password="5riy9e1o7ksbcfan")
 	test <- dbGetQuery(psqlCon, "select * from core_owners.owners limit 100;")
 
 snippet s_connect_postgre_clinicaltrials
