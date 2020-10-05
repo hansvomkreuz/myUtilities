@@ -188,6 +188,9 @@ snippet s_connect_postgre_clinicaltrials
 	library(DBI)
 	psqlCon <- dbConnect(drv = dbDriver("PostgreSQL"), dbname="aact",host="aact-db.ctti-clinicaltrials.org", port=5432, user="eljay1114", password="clinicaltrials#001")
 	test <- dbGetQuery(psqlCon, "select * from information_schema.tables limit 100;")
+
+snippet s_inr
+	`r `
 	
 snippet s_tdsp_5acceptance
 	# CUSTOMER ACCEPTANCE
